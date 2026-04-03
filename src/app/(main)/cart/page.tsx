@@ -1,29 +1,51 @@
 
 "use client";
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Minus, Plus, Trash2, X, ShoppingCart } from 'lucide-react';
+import { Minus, Plus, Trash2, ShoppingCart, Wallet, CheckCircle2, AlertTriangle, Loader2 } from 'lucide-react';
 import { useCart } from '@/context/cart-context';
+import { walletService } from '@/lib/wallet-service';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
 export default function CartPage() {
-  const { items, updateQuantity, removeFromCart, totalPrice, cartCount } = useCart();
+  const { items, updateQuantity, removeFromCart, totalPrice, cartCount, clearCart } = useCart();
+  const [isPaying, setIsPaying] = useState(false);
+  const [paymentResult, setPaymentResult] = useState<{status: string; reason?: string} | null>(null);
+
+  const handleCheckoutOWS = () => {
+    setIsPaying(true);
+    setPaymentResult(null);
+
+    setTimeout(() => {
+      // Simulate creating an invoice and processing payment
+      const invoice = walletService.generateInvoice(totalPrice, 'TrendAI Shopping Cart Purchase');
+      const result = walletService.processPayment(invoice, 'general');
+
+      setPaymentResult({ status: result.status, reason: result.reason });
+      setIsPaying(false);
+
+      if (result.status === 'success') {
+        clearCart();
+      }
+    }, 1500);
+  };
 
   return (
     <div className="container mx-auto py-8">
       <div className="flex items-center gap-3 mb-8">
         <ShoppingCart className="h-8 w-8 text-primary" />
-        <h1 className="text-3xl font-bold tracking-tight">Sepetim ({cartCount} ürün)</h1>
+        <h1 className="text-3xl font-bold tracking-tight">My Cart ({cartCount} items)</h1>
       </div>
       {items.length === 0 ? (
         <div className="text-center py-16 border-2 border-dashed rounded-lg">
-          <p className="text-xl text-muted-foreground">Sepetiniz boş.</p>
+          <p className="text-xl text-muted-foreground">Your cart is empty.</p>
           <Button asChild className="mt-4">
-            <Link href="/">Alışverişe Başla</Link>
+            <Link href="/">Start Shopping</Link>
           </Button>
         </div>
       ) : (
@@ -98,26 +120,52 @@ export default function CartPage() {
           <div>
             <Card className="sticky top-24">
               <CardHeader>
-                <CardTitle>Sipariş Özeti</CardTitle>
+                <CardTitle>Order Summary</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-4">
                 <div className="flex justify-between">
-                  <span>Ara Toplam</span>
+                  <span>Subtotal</span>
                   <span>${totalPrice.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Kargo</span>
-                  <span>Ücretsiz</span>
+                  <span>Shipping</span>
+                  <span>Free</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between font-bold text-lg">
-                  <span>Toplam</span>
+                  <span>Total</span>
                   <span>${totalPrice.toFixed(2)}</span>
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button size="lg" className="w-full" asChild>
-                  <Link href="/checkout/address">Siparişi Tamamla</Link>
+              <CardFooter className="flex-col gap-3">
+                {paymentResult && (
+                  <div className={`w-full p-3 rounded-lg flex flex-col gap-1 text-sm ${paymentResult.status === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+                    <div className="flex items-center gap-2 font-semibold">
+                      {paymentResult.status === 'success' ? <CheckCircle2 size={16} /> : <AlertTriangle size={16} />}
+                      {paymentResult.status === 'success' ? 'Payment Successful!' : 'Payment Failed'}
+                    </div>
+                    {paymentResult.reason && <p className="opacity-90">{paymentResult.reason}</p>}
+                    {paymentResult.status === 'success' && <p>Your order is on its way. 🎉</p>}
+                  </div>
+                )}
+                <Button 
+                  size="lg" 
+                  className="w-full font-bold shadow-md tracking-wide" 
+                  style={{ background: 'linear-gradient(135deg, hsl(263 70% 50%), hsl(220 70% 50%))' }}
+                  onClick={handleCheckoutOWS}
+                  disabled={isPaying || totalPrice === 0}
+                >
+                  {isPaying ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Processing Payment...
+                    </>
+                  ) : (
+                    <>
+                      <Wallet className="mr-2 h-5 w-5" />
+                      Buy with OWS
+                    </>
+                  )}
                 </Button>
               </CardFooter>
             </Card>

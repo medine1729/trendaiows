@@ -26,8 +26,8 @@ const notifications = [
     id: 3,
     type: 'comment',
     user: users[0], // perisu
-    text: 'gönderine yorum yaptı: "Harika görünüyor!"',
-    time: '1g',
+    text: 'commented on your post: "Looks great!"',
+    time: '1d',
     postPreview: 'https://placehold.co/600x800'
   },
   {

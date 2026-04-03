@@ -155,12 +155,12 @@ export function AiChatCard({ chat }: AiChatCardProps) {
             <span className="ml-2">{chat.userComment}</span>
          </p>
          {chat.productSuggestions.length > 1 && (
-            <div className="text-sm text-muted-foreground">
-                Bu görünümdeki diğer ürünler: {chat.productSuggestions.slice(1).map(p => <Link href={`/product/${p.id}`} key={p.id} className="underline hover:text-primary">{p.name}</Link>).reduce((prev, curr) => <>{prev}, {curr}</>)}
-            </div>
+            <p className="mt-2 text-sm text-muted-foreground italic">
+                Other products in this look: {chat.productSuggestions.slice(1).map(p => <Link href={`/product/${p.id}`} key={p.id} className="underline hover:text-primary">{p.name}</Link>).reduce((prev, curr) => <>{prev}, {curr}</>)}
+            </p>
          )}
           <Button variant="link" className="text-muted-foreground p-0 h-auto text-sm">
-            22 yorumun tümünü gör
+            View all 22 comments
           </Button>
       </CardFooter>
     </Card>

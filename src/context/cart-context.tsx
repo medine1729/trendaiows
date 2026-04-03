@@ -11,6 +11,7 @@ interface CartContextType {
   updateQuantity: (productId: string, quantity: number) => void;
   cartCount: number;
   totalPrice: number;
+  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -30,13 +31,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return [...prevItems, { ...product, quantity: 1 }];
     });
     toast({
-      title: "Sepete eklendi",
-      description: `${product.name} sepetinize eklendi.`,
+      title: "Added to Cart",
+      description: `${product.name} has been added to your cart.`,
     })
   };
 
   const removeFromCart = (productId: string) => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== productId));
+  };
+
+  const clearCart = () => {
+    setItems([]);
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
@@ -67,6 +72,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     updateQuantity,
     cartCount,
     totalPrice,
+    clearCart,
   }), [items, addToCart, removeFromCart, updateQuantity, cartCount, totalPrice]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

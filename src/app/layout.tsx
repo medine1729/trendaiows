@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { CartProvider } from '@/context/cart-context';
+import { ChatAgentFloating } from '@/components/chat-agent/ChatAgentFloating';
 
 export const metadata: Metadata = {
   title: 'TrendAI',

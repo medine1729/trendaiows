@@ -191,7 +191,7 @@ export default function SignupPage() {
                             <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="confirm-password">Şifreyi Onayla</Label>
+                            <Label htmlFor="confirm-password">Confirm Password</Label>
                             <Input id="confirm-password" type="password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                         </div>
                         

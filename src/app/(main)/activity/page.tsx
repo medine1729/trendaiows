@@ -14,14 +14,14 @@ const allNotifications = [
         id: 1,
         type: 'follow_request',
         user: { id: 'user3', username: 'ahmet', profilePictureUrl: 'https://placehold.co/100x100', followerCount: 0, followingCount: 0 },
-        text: 'sizi takip etmek istiyor.',
+        text: 'wants to follow you.',
         time: '2s',
     },
      {
         id: 2,
         type: 'like',
         user: users[1], // henife
-        text: 'gönderini beğendi.',
+        text: 'liked your post.',
         time: '5s',
         postPreview: 'https://placehold.co/600x800'
     },
@@ -29,22 +29,22 @@ const allNotifications = [
         id: 3,
         type: 'comment',
         user: users[0], // perisu
-        text: 'gönderine yorum yaptı: "Harika görünüyor!"',
-        time: '1g',
+        text: 'commented on your post: "Looks great!"',
+        time: '1d',
         postPreview: 'https://placehold.co/600x800'
     },
     {
         id: 4,
         type: 'follow_request',
         user: { id: 'user4', username: 'zeynep', profilePictureUrl: 'https://placehold.co/100x100', followerCount: 0, followingCount: 0 },
-        text: 'sizi takip etmek istiyor.',
-        time: '3g',
+        text: 'wants to follow you.',
+        time: '3d',
     },
      {
         id: 5,
         type: 'like',
         user: { id: 'user5', username: 'mehmet', profilePictureUrl: 'https://placehold.co/100x100', followerCount: 0, followingCount: 0 },
-        text: 'gönderini beğendi.',
+        text: 'liked your post.',
         time: '1h',
         postPreview: 'https://placehold.co/600x800'
     },
@@ -81,8 +81,8 @@ const NotificationItem = ({ notification }: { notification: any }) => (
         </div>
         {notification.type === 'follow_request' && (
             <div className="flex gap-2">
-                <Button size="sm">Kabul Et</Button>
-                <Button size="sm" variant="outline">Reddet</Button>
+                <Button size="sm">Accept</Button>
+                <Button size="sm" variant="outline">Decline</Button>
             </div>
         )}
         {notification.postPreview && (
@@ -116,15 +116,15 @@ export default function ActivityPage() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold tracking-tight mb-8">Hareketlerin</h1>
+      <h1 className="text-3xl font-bold tracking-tight mb-8">Your Activity</h1>
       
       <Tabs defaultValue="likes" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="likes">
-            <Heart className="mr-2 h-4 w-4"/> Beğenmeler
+            <Heart className="mr-2 h-4 w-4"/> Likes
           </TabsTrigger>
           <TabsTrigger value="comments">
-            <MessageSquare className="mr-2 h-4 w-4"/> Yorumlar
+            <MessageSquare className="mr-2 h-4 w-4"/> Comments
           </TabsTrigger>
         </TabsList>
         <TabsContent value="likes">
@@ -138,8 +138,8 @@ export default function ActivityPage() {
                         </div>
                     ) : (
                         <EmptyState 
-                            title="Henüz beğeni yok"
-                            description="Gönderileri beğendiğinde, burada görünürler."
+                            title="No likes yet"
+                            description="When you like posts, they will appear here."
                             icon={Heart}
                         />
                     )}
@@ -157,8 +157,8 @@ export default function ActivityPage() {
                         </div>
                     ) : (
                          <EmptyState 
-                            title="Henüz yorum yok"
-                            description="Yorum yaptığın gönderiler burada görünür."
+                            title="No comments yet"
+                            description="Posts you comment on will appear here."
                             icon={MessageSquare}
                         />
                     )}

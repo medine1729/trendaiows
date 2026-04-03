@@ -17,8 +17,8 @@ export default function PaymentPage() {
     e.preventDefault();
     // In a real app, you would process the payment here.
     toast({
-      title: 'Ödeme Başarılı!',
-      description: 'Siparişiniz alındı. Ana sayfaya yönlendiriliyorsunuz.',
+      title: 'Payment Successful!',
+      description: 'Your order has been received. Redirecting to home.',
     });
     // Here you would also clear the cart.
     router.push('/');
@@ -30,26 +30,26 @@ export default function PaymentPage() {
         <CardHeader>
           <div className="flex items-center gap-3 mb-2">
             <CreditCard className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold tracking-tight">Ödeme Bilgileri</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Payment Information</h1>
           </div>
-          <CardDescription>Lütfen güvenli ödeme için kart bilgilerinizi girin.</CardDescription>
+          <CardDescription>Please enter your card details for secure payment.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handlePayment} className="grid gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="card-name">Kart Üzerindeki İsim</Label>
-              <Input id="card-name" placeholder="Ad Soyad" required />
+              <Label htmlFor="card-name">Name on Card</Label>
+              <Input id="card-name" placeholder="Full Name" required />
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="card-number">Kart Numarası</Label>
+              <Label htmlFor="card-number">Card Number</Label>
               <Input id="card-number" placeholder="0000 0000 0000 0000" required />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="expiry-date">Son Kullanma Tarihi</Label>
-                <Input id="expiry-date" placeholder="AA/YY" required />
+                <Label htmlFor="expiry-date">Expiry Date</Label>
+                <Input id="expiry-date" placeholder="MM/YY" required />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="cvv">CVV</Label>
@@ -58,7 +58,7 @@ export default function PaymentPage() {
             </div>
 
             <Button type="submit" size="lg" className="w-full mt-4">
-              Ödemeyi Tamamla ve Siparişi Ver
+              Complete Payment and Place Order
             </Button>
           </form>
         </CardContent>
